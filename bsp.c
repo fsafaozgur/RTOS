@@ -3,9 +3,6 @@
 #include "rtos.h"
 
 
-extern int sysTick_count;
-
-
 void Configuration(void)
 {
 	SystemCoreClockUpdate();																			
@@ -15,13 +12,13 @@ void Configuration(void)
 	
 	
 	(*(volatile uint32_t *)0xE000ED20) |= (0u<<28);							/* SyscTick'in priority leveli PendSV'e göre yüksekte tutuldu ki Tail-Chaining saglanabilsin */
-																															/* PendSV'nin priority leveli SysTick'e göre düsükte tutuldu ki Tail-Chaining saglanabilsin (rtos.c dosyasinda) */	
+																															/* PendSV'nin priority leveli SysTick'e göre düsükte tutuldu ki Tail-Chaining saglanabilsin (tüm islemcilerde ayni adres oldugu için rtos.c dosyasina koyuldu) */	
 	/* 
 	Tail-Chaining yapisindan kasit, context-switching islemine gerek kalmadan, interruptlari arka arkaya ekleyerek daha verimli bir çalisma saglamaktir.
 	Söyle ki, her intterupt çalistiginda, main() de kalinan nokta (islemcinin kendi register larindaki degerler) Stack'e yazilarak ilgili Interrupt_Handler çalistirilir,
 	Interrupt_Handler çalistirildiktan sonra main() e geri dönüs yapilirken, interrupt öncesindeki duruma dönmek için Stack'e yazilan  o anki context geri yüklenir 
-	bu duruma context-swithhing denir ve haliyle maliyetli bir islemdir. Ancak biz Systick_Handler çalistirilip main() e geri dönmeden yani contect switching islemi yapilmadan
-	direk PendsV_Handler i çalistirirsak, iki Interrupt_Handler i arka arkaya (Tail-Chaining) eklemis ve context-swithing islemini yapmamis oluruz.
+	bu duruma context-swithhing denir ve haliyle maliyetli bir islemdir. Ancak biz Systick_Handler çalistirilip main() e geri dönmeden yani context switching islemi yapilmadan
+	direk PendsV_Handler i çalistirirsak, iki Interrupt_Handler 'i arka arkaya (Tail-Chaining) eklemis ve fazladan context-swithing islemleri yapmamis oluruz.
 */
 
 }
@@ -31,7 +28,7 @@ void Configuration(void)
 void SysTick_Handler(void)
 {
 	
-	RTOS_decrement();	
+	RTOS_decrement();																		/* Thread 'lere atanan delay degerlerini sayarak, sifira ulasinca Bitset 'leri ayarlayan fonksiyon */
 	
 	
 	__disable_irq();																		/* Olusabilecek Race-Conditions durumunun önüne geçmek için interruptlari kapattik */
@@ -64,7 +61,7 @@ void PendSV_Handler(void)
 	__asm("PUSH					{r4-r11}");
 	
 	/* RTOS_ThreadCurr->sp = sp */   									   /*	Islemcinin Stack Pointer ini yani Stack Bellegin top noktasinin adresini, çalismakta olan Thread in sp pointer inin içine kaydediyoruz */
-	__asm("LDR 					r1,=RTOS_ThreadCurr");										 /* Ileride bu Thread i tekrar devreye aldigimizda, bu sp degerini islemciye geri yükleyerek kaldigimiz yerden devam etmis olacagiz */
+	__asm("LDR 					r1,=RTOS_ThreadCurr");					 /* Ileride bu Thread i tekrar devreye aldigimizda, bu sp degerini islemciye geri yükleyerek kaldigimiz yerden devam etmis olacagiz */
 	__asm("LDR						r1,[r1,#0x00]");
 	__asm("STR						sp,[r1,#0x00]");
 	
@@ -81,13 +78,13 @@ void PendSV_Handler(void)
 	__asm("STR						r1,[r2,#0x00]");
 
 	/* Pop r4-r11 komutu ile, suanda devreye alinacak Thread a özel olusturulmus Stack Bellekten, R4-R11 registerleri geri yükleyecegiz (islemcinin r4-r11 register larina yüklenecek )
-		 Bunu, context-swithing isleminin gerçeklesecegi, interrupt dan çikis komutu olan BX komutundan hemen önce yapiyoruz, çünkü islemci bunu manuel yapmiyor */
+		 Bunu, context-swithing isleminin gerçeklesecegi, interrupt dan çikis komutu olan BX komutundan hemen önce yapiyoruz, çünkü islemci bunu otomatik yapmiyor */
 	__asm("POP					 {r4-r11}");
 
 	/* __enable_irq() */																/* Interuptlari yeniden aktif ediyoruz */
 	__asm("CPSIE					I");
 	
-	__asm("BX						lr");																		/*Interrupt dan çik */	
+	__asm("BX						lr");														/*Interrupt dan çik */	
 	
 	/* 
 		Bu komutun ardindan islemci kendi sp sinde yer alan (biz yukarida "sp = RTOS_ThreadNext->sp" islemini yaptirarak islemci sp sini manipüle ettik) adresin gösterdigi
