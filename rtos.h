@@ -12,12 +12,12 @@ typedef struct
 }RTOS_Thread;
 
 
-typedef void (*RTOS_ThreadHandler)();				/* Bir altta yer alan fonksiyonda, argüman olarak fonsiyon adresi(threadHandler) yollayacagimiz için bunu tanimladik */
+typedef void (*RTOS_ThreadHandler)(void);				/* Bir altta yer alan fonksiyonda, argüman olarak fonsiyon adresi(threadHandler) yollayacagimiz için bunu tanimladik */
 
 void RTOS_Thread_Create(RTOS_Thread *thread, RTOS_ThreadHandler threadHandler, uint32_t *stack, uint32_t stackSize);
 
-void RTOS_ThreadSwitch();
+void RTOS_ThreadSwitch(void);
 
-void RTOS_init();
+void RTOS_init(void);
 
 #endif  /* __RTOS_H_ */

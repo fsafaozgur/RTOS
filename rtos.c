@@ -78,11 +78,11 @@ void RTOS_Thread_Create(RTOS_Thread *thread, RTOS_ThreadHandler threadHandler, u
 																																			bu sarti saglamistik ama bu kodu baska biri kullanir ve bu kurala uygun bellek seçmezse diye bunu garantiliyoruz
 		
 	
-	/* sp adresli stack bellekte yer alan ilk degeri bos birakiyoruzki buradan align islemi yapabilelim diye, o yüzden ilk deger atamasi, --sp adresinden baslayacak*/
+	/* sp adresli stack bellekte yer alan ilk degeri bos birakiyoruzki buradan align islemi yapabilelim diye, o yüzden ilk deger atamasi, --sp adresinden baslayacak */
 	
-	*(--sp) = (1<<24);   			  						/*EPSR*/  /* EPSR register da 24. bit olarak yer alan  THUMB komut seti degeri daima 1 dir ve bunu Exception Stack Framedeki sirasina yaziyoruz*/ 
-	*(--sp) = (uint32_t)threadHandler;			/* PC */  /* Exception Stack Frame sirasina göre burasi PC register oluyor. Thread devreye alindiginda main_Thread() fonksiyonunun çalismasini istedigimiz için PC ye bu fonksiyonun adresini atadik */
-	*(--sp) = 0x00000001u;									/* LR */	/* Bu ve bundan sonrakilere atanacak degerler önemsiz, yalnizca Exception Stack Frame sirasina göre registerleri belirtiyoruz */
+	*(--sp) = (1<<24);   			  						/* EPSR */  /* EPSR register da 24. bit olarak yer alan  THUMB komut seti degeri daima 1 dir ve bunu Exception Stack Framedeki sirasina yaziyoruz*/ 
+	*(--sp) = (uint32_t)threadHandler;			/* PC */   /* Exception Stack Frame sirasina göre burasi PC register oluyor. Thread devreye alindiginda main_Thread() fonksiyonunun çalismasini istedigimiz için PC ye bu fonksiyonun adresini atadik */
+	*(--sp) = 0x00000001u;									/* LR */	 /* Bu ve bundan sonrakilere atanacak degerler önemsiz, yalnizca Exception Stack Frame sirasina göre registerleri belirtiyoruz */
 	*(--sp) = 0x00000002u;									/* R12 */
 	*(--sp) = 0x00000003u;									/* R3 */
 	*(--sp) = 0x00000004u;									/* R2 */
@@ -102,7 +102,7 @@ void RTOS_Thread_Create(RTOS_Thread *thread, RTOS_ThreadHandler threadHandler, u
 	thread->sp = sp;
 
 	
-	//assert(RTOS_threadNumber < MaxThreadNumber);			/* Eger maksimum thread den daha çok eklenmeye çalisilirsa, programdan çikar */ 
+	/* assert(RTOS_threadNumber < MaxThreadNumber);			 Eger maksimum thread den daha çok eklenmeye çalisilirsa, programdan çikar */ 
 																											/* Sistemi direk kapatmak yanlis bir uygulamadir, örnek olarak buraya eklenmistir*/
 	
 	RTOS_threads[RTOS_threadNumber] = thread;						/* Yeni olusturulan Thread, tüm Thread 'lerin yer aldigi diziye ataniyor */
