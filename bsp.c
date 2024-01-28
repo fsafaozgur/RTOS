@@ -10,7 +10,7 @@ void Configuration(void)
 {
 	SystemCoreClockUpdate();																			
 	SysTick->VAL = 0x0u;																					/* DataSheet'de yer alan "A write of any value clears the field to 0" ifadesine binaen "0" atayarak temizledik*/  
-	SysTick->LOAD = (uint32_t) (SystemCoreClock / 8000);					/* 1 ms sürede reload yapcak sekilde ayarlandi*/
+	SysTick->LOAD = (uint32_t) (SystemCoreClock / 1000);					/* 1 ms sürede reload yapcak sekilde ayarlandi*/
 	SysTick->CTRL |= 0x07u;																				/* Interrupt aktif */ /* Clock Source AHB/8 ayarlandi */ /* Counter aktif */ 
 	
 	
@@ -31,9 +31,8 @@ void Configuration(void)
 void SysTick_Handler(void)
 {
 	
-	++sysTick_count;
+	RTOS_decrement();	
 	
-	if (sysTick_count > 1000) {
 	
 	__disable_irq();																		/* Olusabilecek Race-Conditions durumunun önüne geçmek için interruptlari kapattik */
 	
@@ -42,7 +41,7 @@ void SysTick_Handler(void)
 	
 	__enable_irq();																		  /* Interuptlari yeniden aktif ediyoruz */
 
-	}
+	
 }
 
 

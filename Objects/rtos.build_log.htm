@@ -28,19 +28,20 @@ Project File Date:  01/28/2024
 *** Using Compiler 'V6.21', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Target 1'
 main.c(1): warning: In file included from...
-./rtos.h(15): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   15 | typedef void (*RTOS_ThreadHandler)(void);                               /* Bir altta yer alan fonksiyonda, arg<FC>man olarak fonsiyon adresi(threadHandler) yollayacagimiz i<E7>in bunu tanimladik */
-      |                                                                                                               ^
-./rtos.h(15): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   15 | typedef void (*RTOS_ThreadHandler)(void);                               /* Bir altta yer alan fonksiyonda, arg<FC>man olarak fonsiyon adresi(threadHandler) yollayacagimiz i<E7>in bunu tanimladik */
-      |                                                                                                                                                                             ^
-./rtos.h(23): warning: no newline at end of file [-Wnewline-eof]
-   23 | #endif  /* __RTOS_H_ */
-      |                        ^
-main.c(2): warning: In file included from...
+./rtos.h(5): warning: In file included from...
 ./bsp.h(13): warning: no newline at end of file [-Wnewline-eof]
    13 | #endif  /* __BSP_H_ */
       |                       ^
+main.c(1): warning: In file included from...
+./rtos.h(16): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   16 | typedef void (*RTOS_ThreadHandler)(void);                               /* Bir altta yer alan fonksiyonda, arg<FC>man olarak fonsiyon adresi(threadHandler) yollayacagimiz i<E7>in bunu tanimladik */
+      |                                                                                                               ^
+./rtos.h(16): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   16 | typedef void (*RTOS_ThreadHandler)(void);                               /* Bir altta yer alan fonksiyonda, arg<FC>man olarak fonsiyon adresi(threadHandler) yollayacagimiz i<E7>in bunu tanimladik */
+      |                                                                                                                                                                             ^
+./rtos.h(28): warning: no newline at end of file [-Wnewline-eof]
+   28 | #endif  /* __RTOS_H_ */
+      |                        ^
 main.c(6): warning: invalid UTF-8 in comment [-Winvalid-utf8]
     6 |         Multi Thread olarak <E7>alisan, ancak bu Thread leri sira ile <E7>alistiran bir RTOS tasarlanmistir
       |                             ^
@@ -186,138 +187,214 @@ main.c(29): warning: invalid UTF-8 in comment [-Winvalid-utf8]
    29 |   olmasi ve buna ayri hi<E7>bir g<F6>rev y<FC>klemememis olmalaridir. DataSheet inceledndiginde bunun RTOS i<E7>in kullanilmasinin uygun oldugunun yazilmis oldugu g<F6>r<FC>lebilir
       |                                                                                                                                                                          ^
 main.c(36): warning: no previous extern declaration for non-static variable 'count' [-Wmissing-variable-declarations]
-   36 | uint32_t count = 0;
+   36 | uint32_t count = 0u;
       |          ^
 main.c(36): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-   36 | uint32_t count = 0;
+   36 | uint32_t count = 0u;
       | ^
 main.c(37): warning: no previous extern declaration for non-static variable 'count1' [-Wmissing-variable-declarations]
-   37 | uint32_t count1 = 0;
+   37 | uint32_t count1 = 0u;
       |          ^
 main.c(37): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-   37 | uint32_t count1 = 0;
+   37 | uint32_t count1 = 0u;
       | ^
-main.c(38): warning: no previous extern declaration for non-static variable 'sysTick_count' [-Wmissing-variable-declarations]
-   38 | uint32_t sysTick_count = 0;
+main.c(38): warning: no previous extern declaration for non-static variable 'count2' [-Wmissing-variable-declarations]
+   38 | uint32_t count2 = 0u;
       |          ^
 main.c(38): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-   38 | uint32_t sysTick_count = 0;
+   38 | uint32_t count2 = 0u;
       | ^
-main.c(42): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   42 | uint32_t thread1_stack[32];                                                                                     /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
+main.c(44): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   44 | uint32_t idleThread_stack[32];                                                                                  /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
       |                                                                                                                                                                                                                  ^
-main.c(42): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   42 | uint32_t thread1_stack[32];                                                                                     /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
+main.c(44): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   44 | uint32_t idleThread_stack[32];                                                                                  /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
       |                                                                                                                                                                                                                                                                ^
-main.c(45): warning: function 'main_Thread1' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
-   45 | {
+main.c(50): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   50 |                 /* IdleThread i<E7>erisinde <E7>alistirilacak kodlar "Power Safer" g<F6>revi g<F6>ren kodlar olabilir, <E7><FC>nk<FC> hi<E7>bir
+      |                                ^
+main.c(50): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   50 |                 /* IdleThread i<E7>erisinde <E7>alistirilacak kodlar "Power Safer" g<F6>revi g<F6>ren kodlar olabilir, <E7><FC>nk<FC> hi<E7>bir
+      |                                             ^
+main.c(50): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   50 |                 /* IdleThread i<E7>erisinde <E7>alistirilacak kodlar "Power Safer" g<F6>revi g<F6>ren kodlar olabilir, <E7><FC>nk<FC> hi<E7>bir
+      |                                                                                     ^
+main.c(50): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   50 |                 /* IdleThread i<E7>erisinde <E7>alistirilacak kodlar "Power Safer" g<F6>revi g<F6>ren kodlar olabilir, <E7><FC>nk<FC> hi<E7>bir
+      |                                                                                               ^
+main.c(50): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   50 |                 /* IdleThread i<E7>erisinde <E7>alistirilacak kodlar "Power Safer" g<F6>revi g<F6>ren kodlar olabilir, <E7><FC>nk<FC> hi<E7>bir
+      |                                                                                                                        ^
+main.c(50): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   50 |                 /* IdleThread i<E7>erisinde <E7>alistirilacak kodlar "Power Safer" g<F6>revi g<F6>ren kodlar olabilir, <E7><FC>nk<FC> hi<E7>bir
+      |                                                                                                                                  ^
+main.c(50): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   50 |                 /* IdleThread i<E7>erisinde <E7>alistirilacak kodlar "Power Safer" g<F6>revi g<F6>ren kodlar olabilir, <E7><FC>nk<FC> hi<E7>bir
+      |                                                                                                                                         ^
+main.c(51): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   51 |                                 Thread <E7>alismazken biz IdleThread i devreye alacagiz, kisacasi islemci zamaninin <E7>ok b<FC>y<FC>k b<F6>l<FC>m<FC>n<FC> burda ge<E7>irecek
+      |                                        ^
+main.c(51): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   51 |                                 Thread <E7>alismazken biz IdleThread i devreye alacagiz, kisacasi islemci zamaninin <E7>ok b<FC>y<FC>k b<F6>l<FC>m<FC>n<FC> burda ge<E7>irecek
+      |                                                                                                                     ^
+main.c(51): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   51 |                                 Thread <E7>alismazken biz IdleThread i devreye alacagiz, kisacasi islemci zamaninin <E7>ok b<FC>y<FC>k b<F6>l<FC>m<FC>n<FC> burda ge<E7>irecek
+      |                                                                                                                             ^
+main.c(51): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   51 |                                 Thread <E7>alismazken biz IdleThread i devreye alacagiz, kisacasi islemci zamaninin <E7>ok b<FC>y<FC>k b<F6>l<FC>m<FC>n<FC> burda ge<E7>irecek
+      |                                                                                                                                  ^
+main.c(51): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   51 |                                 Thread <E7>alismazken biz IdleThread i devreye alacagiz, kisacasi islemci zamaninin <E7>ok b<FC>y<FC>k b<F6>l<FC>m<FC>n<FC> burda ge<E7>irecek
+      |                                                                                                                                         ^
+main.c(51): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   51 |                                 Thread <E7>alismazken biz IdleThread i devreye alacagiz, kisacasi islemci zamaninin <E7>ok b<FC>y<FC>k b<F6>l<FC>m<FC>n<FC> burda ge<E7>irecek
+      |                                                                                                                                              ^
+main.c(51): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   51 |                                 Thread <E7>alismazken biz IdleThread i devreye alacagiz, kisacasi islemci zamaninin <E7>ok b<FC>y<FC>k b<F6>l<FC>m<FC>n<FC> burda ge<E7>irecek
+      |                                                                                                                                                   ^
+main.c(51): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   51 |                                 Thread <E7>alismazken biz IdleThread i devreye alacagiz, kisacasi islemci zamaninin <E7>ok b<FC>y<FC>k b<F6>l<FC>m<FC>n<FC> burda ge<E7>irecek
+      |                                                                                                                                                        ^
+main.c(51): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   51 |                                 Thread <E7>alismazken biz IdleThread i devreye alacagiz, kisacasi islemci zamaninin <E7>ok b<FC>y<FC>k b<F6>l<FC>m<FC>n<FC> burda ge<E7>irecek
+      |                                                                                                                                                                     ^
+main.c(46): warning: no previous prototype for function 'main_IdleThread' [-Wmissing-prototypes]
+   46 | void main_IdleThread(void)
+      |      ^
+main.c(46): note: declare 'static' if the function is not intended to be used outside of this translation unit
+   46 | void main_IdleThread(void)
       | ^
-main.c(55): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   55 | uint32_t thread2_stack[32];                                                                              /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
+      | static 
+main.c(47): warning: function 'main_IdleThread' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+   47 | {
+      | ^
+main.c(61): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   61 | uint32_t thread1_stack[32];                                                                                     /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
+      |                                                                                                                                                                                                                  ^
+main.c(61): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   61 | uint32_t thread1_stack[32];                                                                                     /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
+      |                                                                                                                                                                                                                                                                ^
+main.c(64): warning: function 'main_Thread1' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+   64 | {
+      | ^
+main.c(75): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   75 | uint32_t thread2_stack[32];                                                                              /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
       |                                                                                                                                                                                                           ^
-main.c(55): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   55 | uint32_t thread2_stack[32];                                                                              /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
+main.c(75): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+   75 | uint32_t thread2_stack[32];                                                                              /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
       |                                                                                                                                                                                                                                                         ^
-main.c(58): warning: function 'main_Thread2' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
-   58 | {
+main.c(78): warning: function 'main_Thread2' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+   78 | {
       | ^
-main.c(71): warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
-   71 | int main ()
+main.c(92): warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
+   92 | int main ()
       |          ^
       |           void
 main.c(1): warning: In file included from...
-./rtos.h(7): warning: padding size of 'RTOS_Thread' with 3 bytes to alignment boundary [-Wpadded]
-    7 | typedef struct 
-      |         ^
-main.c(81): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   81 |         Configuration();                                                                                                                                                /* Systick <F6>zellikle burada baslatildiki, direk baslatilsaydi devreye girdigi anda daha main() i<E7>erisinde olan
+./rtos.h(12): warning: padding struct 'RTOS_Thread' with 3 bytes to align 'delay' [-Wpadded]
+   12 |         uint32_t delay; /* Delay verildigi taktirde bu degiskene atanacak */
+      |                  ^
+main.c(104): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  104 |         Configuration();                                                                                                                                                /* Systick <F6>zellikle burada baslatildiki, direk baslatilsaydi devreye girdigi anda daha main() i<E7>erisinde olan
       |                                                                                                                                                                                    ^
-main.c(81): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   81 |         Configuration();                                                                                                                                                /* Systick <F6>zellikle burada baslatildiki, direk baslatilsaydi devreye girdigi anda daha main() i<E7>erisinde olan
+main.c(104): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  104 |         Configuration();                                                                                                                                                /* Systick <F6>zellikle burada baslatildiki, direk baslatilsaydi devreye girdigi anda daha main() i<E7>erisinde olan
       |                                                                                                                                                                                                                                                                            ^
-main.c(83): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   83 |                                                                                                                                                                                                                         <E7>alisilacak ve kalan kodlarin <E7>alistirilmasi i<E7>in main() e geri d<F6>n<FC>s saglanamayacakti. Bu sebeple t<FC>m ayarlar
+main.c(106): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  106 |                                                                                                                                                                                                                         <E7>alisilacak ve kalan kodlarin <E7>alistirilmasi i<E7>in main() e geri d<F6>n<FC>s saglanamayacakti. Bu sebeple t<FC>m ayarlar
       |                                                                                                                                                                                                                         ^
-main.c(83): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   83 |                                                                                                                                                                                                                         <E7>alisilacak ve kalan kodlarin <E7>alistirilmasi i<E7>in main() e geri d<F6>n<FC>s saglanamayacakti. Bu sebeple t<FC>m ayarlar
+main.c(106): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  106 |                                                                                                                                                                                                                         <E7>alisilacak ve kalan kodlarin <E7>alistirilmasi i<E7>in main() e geri d<F6>n<FC>s saglanamayacakti. Bu sebeple t<FC>m ayarlar
       |                                                                                                                                                                                                                                                          ^
-main.c(83): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   83 |                                                                                                                                                                                                                         <E7>alisilacak ve kalan kodlarin <E7>alistirilmasi i<E7>in main() e geri d<F6>n<FC>s saglanamayacakti. Bu sebeple t<FC>m ayarlar
+main.c(106): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  106 |                                                                                                                                                                                                                         <E7>alisilacak ve kalan kodlarin <E7>alistirilmasi i<E7>in main() e geri d<F6>n<FC>s saglanamayacakti. Bu sebeple t<FC>m ayarlar
       |                                                                                                                                                                                                                                                                             ^
-main.c(83): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   83 |                                                                                                                                                                                                                         <E7>alisilacak ve kalan kodlarin <E7>alistirilmasi i<E7>in main() e geri d<F6>n<FC>s saglanamayacakti. Bu sebeple t<FC>m ayarlar
+main.c(106): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  106 |                                                                                                                                                                                                                         <E7>alisilacak ve kalan kodlarin <E7>alistirilmasi i<E7>in main() e geri d<F6>n<FC>s saglanamayacakti. Bu sebeple t<FC>m ayarlar
       |                                                                                                                                                                                                                                                                                                   ^
-main.c(83): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   83 |                                                                                                                                                                                                                         <E7>alisilacak ve kalan kodlarin <E7>alistirilmasi i<E7>in main() e geri d<F6>n<FC>s saglanamayacakti. Bu sebeple t<FC>m ayarlar
+main.c(106): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  106 |                                                                                                                                                                                                                         <E7>alisilacak ve kalan kodlarin <E7>alistirilmasi i<E7>in main() e geri d<F6>n<FC>s saglanamayacakti. Bu sebeple t<FC>m ayarlar
       |                                                                                                                                                                                                                                                                                                        ^
-main.c(83): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   83 |                                                                                                                                                                                                                         <E7>alisilacak ve kalan kodlarin <E7>alistirilmasi i<E7>in main() e geri d<F6>n<FC>s saglanamayacakti. Bu sebeple t<FC>m ayarlar
+main.c(106): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  106 |                                                                                                                                                                                                                         <E7>alisilacak ve kalan kodlarin <E7>alistirilmasi i<E7>in main() e geri d<F6>n<FC>s saglanamayacakti. Bu sebeple t<FC>m ayarlar
       |                                                                                                                                                                                                                                                                                                                                            ^
-main.c(84): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   84 |                                                                                                                                                                                                                         yapildiktan ve t<FC>m Thread ler create edildikten sonra SysTick devreye alinmistir */
+main.c(107): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  107 |                                                                                                                                                                                                                         yapildiktan ve t<FC>m Thread ler create edildikten sonra SysTick devreye alinmistir */
       |                                                                                                                                                                                                                                         ^
-main.c(89): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   89 |         __disable_irq();                                                                                                                                                /* Olusabilecek Race-Conditions durumunun <F6>n<FC>ne ge<E7>mek i<E7>in interruptlari kapattik */
+main.c(112): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  112 |         __disable_irq();                                                                                                                                                /* Olusabilecek Race-Conditions durumunun <F6>n<FC>ne ge<E7>mek i<E7>in interruptlari kapattik */
       |                                                                                                                                                                                                                   ^
-main.c(89): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   89 |         __disable_irq();                                                                                                                                                /* Olusabilecek Race-Conditions durumunun <F6>n<FC>ne ge<E7>mek i<E7>in interruptlari kapattik */
+main.c(112): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  112 |         __disable_irq();                                                                                                                                                /* Olusabilecek Race-Conditions durumunun <F6>n<FC>ne ge<E7>mek i<E7>in interruptlari kapattik */
       |                                                                                                                                                                                                                        ^
-main.c(89): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   89 |         __disable_irq();                                                                                                                                                /* Olusabilecek Race-Conditions durumunun <F6>n<FC>ne ge<E7>mek i<E7>in interruptlari kapattik */
+main.c(112): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  112 |         __disable_irq();                                                                                                                                                /* Olusabilecek Race-Conditions durumunun <F6>n<FC>ne ge<E7>mek i<E7>in interruptlari kapattik */
       |                                                                                                                                                                                                                                 ^
-main.c(89): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   89 |         __disable_irq();                                                                                                                                                /* Olusabilecek Race-Conditions durumunun <F6>n<FC>ne ge<E7>mek i<E7>in interruptlari kapattik */
+main.c(112): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  112 |         __disable_irq();                                                                                                                                                /* Olusabilecek Race-Conditions durumunun <F6>n<FC>ne ge<E7>mek i<E7>in interruptlari kapattik */
       |                                                                                                                                                                                                                                          ^
-main.c(97): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   97 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
+main.c(120): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  120 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
       |                            ^
-main.c(97): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   97 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
+main.c(120): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  120 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
       |                                  ^
-main.c(97): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   97 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
+main.c(120): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  120 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
       |                                               ^
-main.c(97): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   97 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
+main.c(120): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  120 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
       |                                                                ^
-main.c(97): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   97 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
+main.c(120): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  120 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
       |                                                                          ^
-main.c(97): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   97 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
+main.c(120): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  120 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
       |                                                                                                                                                                         ^
-main.c(97): warning: invalid UTF-8 in comment [-Winvalid-utf8]
-   97 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
+main.c(120): warning: invalid UTF-8 in comment [-Winvalid-utf8]
+  120 | /* while (1) seklinde bir d<F6>ng<FC>ye ihtiya<E7> kalmamistir <E7><FC>nk<FC> yukarida context-switching islemi baslatilmistir, haliyle bir daha main() in bu satirina d<F6>n<FC>lemeyecektir */
       |                                                                                                                                                                              ^
-main.c(42): warning: no previous extern declaration for non-static variable 'thread1_stack' [-Wmissing-variable-declarations]
-   42 | uint32_t thread1_stack[32];                                                                                     /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
+main.c(44): warning: no previous extern declaration for non-static variable 'idleThread_stack' [-Wmissing-variable-declarations]
+   44 | uint32_t idleThread_stack[32];                                                                                  /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
       |          ^
-main.c(42): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-   42 | uint32_t thread1_stack[32];                                                                                     /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
+main.c(44): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+   44 | uint32_t idleThread_stack[32];                                                                                  /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
       | ^
-main.c(43): warning: no previous extern declaration for non-static variable 'thread1' [-Wmissing-variable-declarations]
-   43 | RTOS_Thread thread1;
+main.c(45): warning: no previous extern declaration for non-static variable 'idleThread' [-Wmissing-variable-declarations]
+   45 | RTOS_Thread idleThread;
       |             ^
-main.c(43): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-   43 | RTOS_Thread thread1;
+main.c(45): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+   45 | RTOS_Thread idleThread;
       | ^
-main.c(55): warning: no previous extern declaration for non-static variable 'thread2_stack' [-Wmissing-variable-declarations]
-   55 | uint32_t thread2_stack[32];                                                                              /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
+main.c(61): warning: no previous extern declaration for non-static variable 'thread1_stack' [-Wmissing-variable-declarations]
+   61 | uint32_t thread1_stack[32];                                                                                     /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
       |          ^
-main.c(55): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-   55 | uint32_t thread2_stack[32];                                                                              /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
+main.c(61): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+   61 | uint32_t thread1_stack[32];                                                                                     /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
       | ^
-main.c(56): warning: no previous extern declaration for non-static variable 'thread2' [-Wmissing-variable-declarations]
-   56 | RTOS_Thread thread2;
+main.c(62): warning: no previous extern declaration for non-static variable 'thread1' [-Wmissing-variable-declarations]
+   62 | RTOS_Thread thread1;
       |             ^
-main.c(56): note: declare 'static' if the variable is not intended to be used outside of this translation unit
-   56 | RTOS_Thread thread2;
+main.c(62): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+   62 | RTOS_Thread thread1;
       | ^
-87 warnings generated.
+main.c(75): warning: no previous extern declaration for non-static variable 'thread2_stack' [-Wmissing-variable-declarations]
+   75 | uint32_t thread2_stack[32];                                                                              /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
+      |          ^
+main.c(75): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+   75 | uint32_t thread2_stack[32];                                                                              /* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" <F6>zelligi sebebiyle 8'in kati olan bellek se<E7>ildi */
+      | ^
+main.c(76): warning: no previous extern declaration for non-static variable 'thread2' [-Wmissing-variable-declarations]
+   76 | RTOS_Thread thread2;
+      |             ^
+main.c(76): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+   76 | RTOS_Thread thread2;
+      | ^
+109 warnings generated.
 compiling main.c...
 linking...
-Program Size: Code=1448 RO-data=440 RW-data=4 ZI-data=2064  
-".\Objects\rtos.axf" - 0 Error(s), 87 Warning(s).
+Program Size: Code=1842 RO-data=442 RW-data=4 ZI-data=2216  
+".\Objects\rtos.axf" - 0 Error(s), 109 Warning(s).
 
 <h2>Software Packages used:</h2>
 

@@ -33,9 +33,28 @@
 void main_Thread1 (void);
 void main_Thread2 (void);
 
-uint32_t count = 0;
-uint32_t count1 = 0;
-uint32_t sysTick_count = 0;
+uint32_t count = 0u;
+uint32_t count1 = 0u;
+uint32_t count2 = 0u;
+
+
+
+
+/* IdleThread tanimlamalari */
+uint32_t idleThread_stack[32];											/* 32 adet 32 bitlik verinin atanabilecegi bir Stack Bellek olusturduk, ARM'in "8 byte boundary" özelligi sebebiyle 8'in kati olan bellek seçildi */
+RTOS_Thread idleThread;
+void main_IdleThread(void)
+{
+	while (1)
+	{
+		/* IdleThread içerisinde çalistirilacak kodlar "Power Safer" görevi gören kodlar olabilir, çünkü hiçbir
+				Thread çalismazken biz IdleThread i devreye alacagiz, kisacasi islemci zamaninin çok büyük bölümünü burda geçirecek
+		*/
+		count++;
+	}
+}
+
+
 
 
 /* Thread1 tanimlamalari */
@@ -45,7 +64,8 @@ void main_Thread1(void)
 {
 	while (1)
 	{
-		count++;
+		count1++;
+		RTOS_delay(1000);
 	}
 }
 
@@ -58,7 +78,8 @@ void main_Thread2(void)
 {
 	while (1)
 	{
-		count1++;
+		count2++;
+		RTOS_delay(3000);
 	}
 }
 
@@ -72,9 +93,11 @@ int main ()
 {
 	
 	RTOS_init();
-
-	RTOS_Thread_Create(&thread1, &main_Thread1, thread1_stack, sizeof(thread1_stack));			/* Thread1 olusturuldu */
-	RTOS_Thread_Create(&thread2, &main_Thread2, thread2_stack, sizeof(thread2_stack));			/* Thread1 olusturuldu */
+	
+	/* Ilk olusturulan Thread mutlaka IdleThread olmali */
+	RTOS_Thread_Create(&idleThread, &main_IdleThread, idleThread_stack, sizeof(idleThread_stack));			/* IdleThread olusturuldu */
+	RTOS_Thread_Create(&thread1, &main_Thread1, thread1_stack, sizeof(thread1_stack));									/* Thread1 olusturuldu */
+	RTOS_Thread_Create(&thread2, &main_Thread2, thread2_stack, sizeof(thread2_stack));									/* Thread1 olusturuldu */
 
 
 	

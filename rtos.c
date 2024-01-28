@@ -5,7 +5,6 @@
 
 
 
-
 /* 
 	PendSV içerisinde yapacagimiz context-switching islemi ile Thread ler arasinda geçis yapilirken RTOS_ThreadNext ve RTOS_ThreadCurr içerisindeki pointerlar
 	sürekli olarak degisecegi için (pointer larin isaret ettigi bellek degerleri degil, pointer larin kendi degerleri degisecegi için) burada pointer lar volatile yapilmistir.
@@ -24,29 +23,32 @@ RTOS_Thread *RTOS_threads[32+1];					/* 32 adet thread yerlestirebilecegimiz bir
 																					Fazladan 1 eklememizin sebebi ise Idle Thread 'dir, Idle Thread 'in priority leveli olmadigi için o ayri birakilmistir
 																					ve hiçbir Thread devrede degilken o çalisir. Idle Thread içine pil tasarrufu yapacak kodlar koyarsak, hiçbir Thread çalismazken sistem güç tasarrufu yapar. */
 
-uint8_t RTOS_threadNumber = 0;						/*Sistemimizde kaç adet Thread oldugunu bir degiskene atiyoruz */
-uint8_t RTOS_currentThreadNumber = 0;			/*Halihazirda çalisan Thread in index numarasini kaydediyoruz (sirali çalistirmak için gerekli) */
+uint8_t RTOS_threadNumber = 0u;						/*Sistemimizde kaç adet Thread oldugunu bir degiskene atiyoruz */
+uint8_t RTOS_currentThreadNumber = 0u;		/*Halihazirda çalisan Thread in index numarasini kaydediyoruz (sirali çalistirmak için gerekli) */
+
+uint32_t RTOS_ReadyBitSet = 0u;						/* Çalismaya hazir Thread ler */
+uint32_t RTOS_DelayBitSet = 0u;						/* Delay verilerek Blocking islemi yapilacak Thread ler */
 
 
+
+
+
+/* PendSV ile RTOS_ThreadNext adresinin gösterdigi Thread i devreye aldigimiz için, bu fonksiyonun temel görevi
+			RTOS_ThreadNext in hangi Thread 'i gösterecegini belirlemektir. 
+*/
 void RTOS_ThreadSwitch()
 {
 
-	++RTOS_currentThreadNumber;																/* Fonsiyon her tetiklendiginde bir sonraki Thread a geçilecek*/														
-	
-	if (RTOS_currentThreadNumber == RTOS_threadNumber)				/* Thread lerin hepsi sirayla çalistiktan sonra basa döndürüyoruz */
-	{
-		RTOS_currentThreadNumber = 0;
+	if (RTOS_ReadyBitSet == 0u){
+		 RTOS_ThreadNext = RTOS_threads[0];											/* Eger hiçbir Thread aktif degilse IdleThread devreye girecek */
 	}
+	else {
+		uint8_t clz = 32 - ( __CLZ(RTOS_ReadyBitSet) );							/* RTOS_ReadyBitSet 'in logic-1 olan MSB bitini buluyoruz */
+		RTOS_ThreadNext = RTOS_threads[clz];										/* Böylelikle Priority Level en yüksek olan Thread i devreye almak üzere atiyoruz */
+	}
+
 	
-	
-	/* PendSV ile RTOS_ThreadNext adresinin gösterdigi Thread i devreye aldigimiz için, bu fonksiyonun temel görevi
-			RTOS_ThreadNext in hangi Thread 'i gösterecegini belirlemektir. 
-	*/
-	RTOS_ThreadNext = RTOS_threads[RTOS_currentThreadNumber];
-	
-	
-	
-	/* Context-Switching islemini yapacak olan PendSV 'yi çalistiriyoruz */ 
+	/* Context-Switching islemi yaparak RTOS_ThreadNext i devreye alacak olan PendSV 'yi çalistiriyoruz */ 
 	if (RTOS_ThreadNext != RTOS_ThreadCurr)
 	{
 			(*(volatile uint32_t *)0xE000ED04) |= (1<<28);    /* Devreye girmesi gereken bir Thread var ise (RTOS_ThreadNext) o halde PendSV 'yi çalistir */
@@ -105,8 +107,61 @@ void RTOS_Thread_Create(RTOS_Thread *thread, RTOS_ThreadHandler threadHandler, u
 	/* assert(RTOS_threadNumber < MaxThreadNumber);			 Eger maksimum thread den daha çok eklenmeye çalisilirsa, programdan çikar */ 
 																											/* Sistemi direk kapatmak yanlis bir uygulamadir, örnek olarak buraya eklenmistir*/
 	
+	thread -> prio = RTOS_threadNumber;									/* Thread icin belirledigimiz Priority level atandi */
 	RTOS_threads[RTOS_threadNumber] = thread;						/* Yeni olusturulan Thread, tüm Thread 'lerin yer aldigi diziye ataniyor */
-	++RTOS_threadNumber;																/* Bir sonraki olusturulacak Thread için numara bir arttiriliyor */
+	
+	if (RTOS_threadNumber != 0){												  /* IdleThread ise onu hiçbir zaman RTOS_ReadyBitSet içine koymayacaz çünkü o hiçbir zaman Delay edilememeli */
+			RTOS_ReadyBitSet |= (1 << --RTOS_threadNumber);		/* Yeni olusturulan Thread i aktif yani çalismaya hazir hale getirdik */ 
+			RTOS_threadNumber += 2;														/* IdleThread degilse RTOS_ReadyBitSet in LSB sine konulacak, daha sonra 1 arttiracaktik 
+																													 ancak halihazirda fazladan 1 decrement islemi yapildigi için 2 arttiriyoruz */
+	}else {
+		++RTOS_threadNumber;
+	}
+	
+}
 
+
+
+
+void RTOS_decrement(void)
+{
+		uint32_t tempDelay = RTOS_DelayBitSet;
+		uint8_t iter = 1;
+	
+		while (tempDelay != 0u )
+		{
+			if (tempDelay & 1u)
+			{
+				 --RTOS_threads[iter]->delay;
+				if (RTOS_threads[iter]->delay == 0)
+				{
+						RTOS_ReadyBitSet |= (1 << (RTOS_threads[iter]->prio - 1));
+						RTOS_DelayBitSet &= ~(1 << (RTOS_threads[iter]->prio - 1));
+				}
+			}
+			tempDelay = tempDelay >> 1;	
+			++iter;
+			//RTOS_Thread tempThread = RTOS_threads[];
+
+		}
+
+
+}
+
+
+void RTOS_delay(uint32_t delay)
+{
+		RTOS_ThreadCurr->delay = delay;
+		RTOS_ReadyBitSet &= ~(1 << (RTOS_ThreadCurr->prio - 1));
+		RTOS_DelayBitSet |= (1 << (RTOS_ThreadCurr->prio - 1));
+	
+		__disable_irq();																		/* Olusabilecek Race-Conditions durumunun önüne geçmek için interruptlari kapattik */
+	
+		RTOS_ThreadSwitch();																/* Eger devreye girecek  Thread varsa burada belirleyip, PendSV yi devreye alacak biti set ediyoruz,
+																												ancak SysTick_Handler çalismasini bitirdikten sonra, PendSV devreye girebilecek ve context-switching islemini yapabilecektir*/
+	
+		__enable_irq();																		  /* Interuptlari yeniden aktif ediyoruz */
+	
+		
 
 }
