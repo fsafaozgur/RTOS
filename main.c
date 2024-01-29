@@ -55,7 +55,7 @@ void main_IdleThread(void)
 				Ancak, gözlemlenebilsin diye simdilik bir degiskeni arttirmak için kullaniyoruz.
 		*/
 		
-		count++;
+		++count;
 	}
 }
 
@@ -69,7 +69,7 @@ void main_Thread1(void)
 {
 	while (1)
 	{
-		count1++;
+		++count1;
 		RTOS_delay(1000);
 	}
 }
@@ -83,7 +83,7 @@ void main_Thread2(void)
 {
 	while (1)
 	{
-		count2++;
+		++count2;
 		RTOS_delay(3000);
 	}
 }
